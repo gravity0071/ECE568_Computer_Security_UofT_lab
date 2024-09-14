@@ -1,0 +1,21 @@
+----------------------------------part1:-------------------------------------------------
+    For part 1.1, I implemented a function called `hex_string_to_binary` to convert 
+hexadecimal data to binary, then passed the binary data to the `base32_encode` function 
+to encode it into base32. After that, I concatenated all the strings to form the URI and 
+obtained the final result.
+    For part 1.2, I implemented several functions to convert hexadecimal data to binary 
+data and to reverse the binary array. I also implemented functions to convert data between 
+different formats. However, when calculating a SHA1 hash, it's necessary to pad the secret 
+with a block size of 64 bytes. Additionally, the SHA1 hash is calculated using the inner 
+and outer keys separately. To obtain a 6-digit code, I referenced the documentation's Java 
+code, which involves taking the mod of the hash value with 1000000. Finally, I compared 
+the generated code with the provided code. If they are the same, I returned 1; otherwise, 
+I returned 0.
+
+
+------------------------------part2---------------------------------------------------------
+    For getAuthenticatorStatus, I wrote the url and get the response of it, i use an integer
+to demonstrate whether the user has set two biometric modalities, and get the status from 
+json string.
+    For sendStepup, I stored verificationId in self.stepupId for future use.
+    For getStepupStatus, I get the status from json string and return the value.

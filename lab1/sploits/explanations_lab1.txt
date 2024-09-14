@@ -1,0 +1,43 @@
+sploit 1:
+    we need to overflow buf with the starting address of buf, which is 120 bytes away from buf, 
+    so we first fill buf with NOP, then fill the first 45 bytes with shellcode, after we do this, 
+    the return address will be modified, then target1 can be sploited.
+
+
+sploit 2:
+    the stack looks like this:<buf><len><i><rip>, and len is 264 bytes away from starting position 
+    of buf, i is 268 bytes away from buf, so what we need to do is modify len through overflow which 
+    I rewrited it to 284, and then rewrite i to 271, so that we can continue copying arg[1] to buf to 
+    cause target2 being sploited. and we need to put 0x00 in env[], cause 0x00 means end of string.
+
+
+sploit 3:
+    rip is 72 bytes away from buf, however, in foo, the program wites 'AAAA' in buf, which is 4 bytes. 
+    so when running the sploit 2, it will overflow rip with buf[68]---buf[72] which contains the 
+    address of buf. Then the shellcode will run when running sploit 3.
+
+
+sploit 4:
+    the stacks looks like this: <buf><i><len><rip>, and i is 168 bytes away from buf, len is 172 bytes 
+    away from buf, however, we can only overwrite i at first cause len is equal to 169 at beginning. 
+    so in arg[1], I modified i from 171 to 71, so len can be reached, and then I modify len to 89, 
+    which will assure that rip will modify with the address of buf. env is used to store 0x00.
+
+
+sploit 5:
+    rip: 0x3021fea8
+    formatString: 0x3021f9a0
+    shellcode is at arg[1][60], so we need to write 0x3021f9dc to rip
+    0xdc = 220 - 45 - 32 = 143 ---- 0x3021fea8
+             0xf9 - 0xdc = 29  ---- 0x3021fea9
+             0x21 - 0xf9 = 40  ---- 0x3021feaa
+             0x30 - 0x21 = 15  ---- 0x3021feab       
+    <RA1><dummy><RA2><dummy><RA3><dummy><RA4><NOP><shellcode><formateString>
+    we use env to handle 0x00
+
+
+sploit 6:
+    we need to create a fake tag at q, which is in p[72], which the prev points to p's address and 
+    the next points to rip, since this will change p[4] to p[7] and they contains the shellcode, we 
+    need to modify shellcode a little bit, which modify the first line of the shell code which jump 
+    to 0x25, and fill p[4] to p[7] with NOP. 

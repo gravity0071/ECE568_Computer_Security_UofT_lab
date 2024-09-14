@@ -1,0 +1,27 @@
+query port: 30889 (30141)
+NAMED port number(Listen-on port): 62105 (62013)
+RNDC port number: 49152 (49112)
+PROXY port number:62106 (62014)
+
+-------------------Part1:-------------------
+ In this part, I used 'dig @127.0.0.1 -p 62105 utoronto.ca' to dig address using local DNS server, and for 
+Mail, I used 'dig @127.0.0.1 -p 62105 utoronto.ca MX' to get the mail address.
+
+-------------------Part2:-------------------
+ In this part, I wrote a proxy server who listens to port number 62106 to get a request and sends back the received data back to client.
+ The running command is as below:
+	python2 dnsproxy_starter.py --port 62106 --dns_port 62105
+
+-------------------Part3:-------------------
+ In this part, I implemented several functions upon the code I wrote in part 2, in this code, I rewrite the IP address and name server in the received data, and send the spoofed data back to the client.
+ The running command is as below:
+	python2 dnsproxy_starter.py --port 62106 --dns_port 62105 --spoof_response 
+
+-------------------Part4:-------------------
+./part4_starter.py --ip 127.0.0.1 --port 62105 --query_port 30889
+
+After randomize the port, the second-try commands are:
+./part4_starter.py --ip 127.0.0.1 --port 62013 --query_port 30141
+dig @127.0.0.1 NS example.com -p 62013
+
+ In this part, I wrote a program to spoof DNS server, first, I query a random url and then at the same time, I flood DNS server through query port with different transaction ID, which can successfully spoof the server after few interations.
